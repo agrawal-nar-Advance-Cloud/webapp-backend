@@ -53,8 +53,8 @@ public class UserController {
                 return new ResponseEntity<>(new Errors(errors), HttpStatus.BAD_REQUEST);
             }else{
                     user.setAccountCreated(new Date());
-                    user.setAccountUpdate(new Date());
-                    User u = userService.saveUser(user);
+                    user.setAccountUpdated(new Date());
+                    userService.saveUser(user);
                     return new ResponseEntity<>(user,HttpStatus.CREATED);
             }
     }
@@ -74,14 +74,14 @@ public class UserController {
             User user = null;
             try {
                 user = auth.authenticate(headers);
+                return new ResponseEntity<>(user,HttpStatus.OK);
 
             } catch (AuthorizationException e) {
-                return new ResponseEntity<>(new Message(e.getMessage()),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new Message(e.getMessage()),HttpStatus.UNAUTHORIZED);
+            }catch (Exception e){
+                return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
             }
-            if (user != null)
-                return new ResponseEntity<>(user,HttpStatus.OK);
-            else
-                return new ResponseEntity<>(new Message("Invalid email/password"),HttpStatus.NOT_FOUND);
+
 
     }
 
@@ -90,24 +90,23 @@ public class UserController {
         User u = null;
             try {
                  u = auth.authenticate(headers);
+                if(user.getFirstName().isEmpty() || user.getFirstName()==null )
+                    return new ResponseEntity<>(new Message("Please enter first name"), HttpStatus.BAD_REQUEST);
+                if(user.getLastName().isEmpty() || user.getLastName()==null )
+                    return new ResponseEntity<>(new Message("Please enter last name"), HttpStatus.BAD_REQUEST);
+                if (user.getPassword().isEmpty() || user.getPassword()==null || !validatePassword(user.getPassword())) {
+                    return new ResponseEntity<>(new Message("Use Strong Password"), HttpStatus.BAD_REQUEST);
+                }else{
+                    user.setAccountUpdated(new Date());
+                    User newUser = userService.updateUser(user,u.getEmail());
+                    return new ResponseEntity<>(newUser, HttpStatus.ACCEPTED);
+                }
             }catch (AuthorizationException e) {
-                return new ResponseEntity<>(new Message(e.getMessage()),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new Message(e.getMessage()),HttpStatus.UNAUTHORIZED);
+            }catch (Exception e){
+                return new ResponseEntity<>(new Message(e.getMessage()), HttpStatus.BAD_REQUEST);
             }
-            if (u != null){
-                    if(user.getFirstName().isEmpty() || user.getFirstName()==null )
-                        return new ResponseEntity<>(new Message("Please enter first name"), HttpStatus.BAD_REQUEST);
-                    if(user.getLastName().isEmpty() || user.getLastName()==null )
-                        return new ResponseEntity<>(new Message("Please enter last name"), HttpStatus.BAD_REQUEST);
-                    if (user.getPassword().isEmpty() || user.getPassword()==null || !validatePassword(user.getPassword())) {
-                        return new ResponseEntity<>(new Message("Use Strong Password"), HttpStatus.BAD_REQUEST);
-                    }else{
-                        user.setAccountUpdate(new Date());
-                        User newUser = userService.updateUser(user,u.getEmail());
-                        return new ResponseEntity<>(newUser, HttpStatus.OK);
-                    }
-            }
-            else
-                return new ResponseEntity<>(new Message("Invalid email/password"), HttpStatus.UNAUTHORIZED);
+
     }
 
     public Boolean validatePassword(String password) {

@@ -24,6 +24,7 @@ mvnw.cmd
 .sts4-cache
 
 ### IntelliJ IDEA ###
+HELP.md
 .idea
 *.iws
 *.iml
