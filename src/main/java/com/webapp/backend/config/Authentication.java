@@ -25,13 +25,17 @@ public class Authentication {
         String token = headers.getFirst("authorization").substring(6);
 
         if (token == null || token.isEmpty() || token.isBlank())
-            new AuthorizationException("Token cannot be empty!");
+            throw new AuthorizationException("Token cannot be empty!");
 
         byte[] actualByte = Base64.getDecoder().decode(token);
         String decodedToken = new String(actualByte);
         String[] credentials = decodedToken.split(":");
 
         User u = userService.login(credentials[0], credentials[1]);
+
+        if(u== null){
+            throw new AuthorizationException("Invalid email/password");
+        }
 
         return u;
     }

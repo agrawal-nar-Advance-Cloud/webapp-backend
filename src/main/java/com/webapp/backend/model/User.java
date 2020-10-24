@@ -1,7 +1,6 @@
 package com.webapp.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.GenericGenerator;
 
 
 import javax.persistence.*;
@@ -29,7 +28,7 @@ public class User implements Serializable {
 
     private Date accountCreated;
 
-    private Date accountUpdate;
+    private Date accountUpdated;
 
     public User() {
     }
@@ -83,11 +82,11 @@ public class User implements Serializable {
         this.accountCreated = accountCreated;
     }
 
-    public Date getAccountUpdate() {
-        return accountUpdate;
+    public Date getAccountUpdated() {
+        return accountUpdated;
     }
 
-    public void setAccountUpdate(Date accountUpdate) {
-        this.accountUpdate = accountUpdate;
+    public void setAccountUpdated(Date accountUpdated) {
+        this.accountUpdated = accountUpdated;
     }
 }
