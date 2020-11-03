@@ -1,0 +1,42 @@
+replicaCount: 3
+
+image:
+  repository: nareshagrawal/backend:latest
+  pullPolicy: Always
+
+imagePullSecrets: []
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace:
+  name: api
+
+progressDeadlineSeconds: 1000
+minReadySeconds: 30
+
+deployment:
+  type: RollingUpdate
+  maxSurge: 1
+  maxUnavailable: 0
+
+configmap:
+  name: backend-config
+  RDS_CONNECTION_STRING: dbinstance.cjq22x5salrq.us-east-1.rds.amazonaws.com
+  RDS_DB_NAME: backend
+
+secret:
+  dockercred:
+    name: backend-dockercred
+    type: kubernetes.io/dockerconfigjson
+    dockerconfigjson: ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogImJtRnlaWE5vWVdkeVlYZGhiRG81TURNNU1qUTNNRGd4VG1GQSIKCQl9Cgl9LAoJIkh0dHBIZWFkZXJzIjogewoJCSJVc2VyLUFnZW50IjogIkRvY2tlci1DbGllbnQvMTkuMDMuMTMgKGxpbnV4KSIKCX0KfQ==
+  rdscred:
+    name: backend-rdscred
+    type: Opaque
+    username: cm9vdA==
+    password: cGFzc3dvcmQ=
+
+service:
+  name: backend-service
+  type: LoadBalancer
+  port: 8080
