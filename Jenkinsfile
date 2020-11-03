@@ -43,11 +43,19 @@ pipeline {
             }
         }
 
-        stage('Cluster Info') {
+        stage('Write file myvalues.yaml') {
+            steps{
+                script {
+                    writeFile file: 'helm/myvalues.yaml', text: "${BACKEND_MYVALUES}"
+                }
+            }
+        }
+
+        stage('Helm upgrade') {
             steps{
                 script {
                     withKubeConfig([credentialsId: 'kubernetesCred',serverUrl: "${ServerUrl}"]) {
-                        sh "kubectl cluster-info"
+                        sh "helm upgrade backend ./helm/ -f ./helm/myvalues.yaml"
                     }
                 }
             }
