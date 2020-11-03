@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Building image') {
+        stage('Build image') {
              steps {
                 script {
                     dockerImage = docker.build ("${BACKEND_IMAGE}")
@@ -42,7 +42,24 @@ pipeline {
                 }
             }
         }
+
+        stage('Cluster Info') {
+            steps{
+                script {
+                    withKubeConfig([credentialsId: 'kubernetesCred',serverUrl: "${ServerUrl}"]) {
+                        sh "kubectl cluster-info"
+                    }
+                }
+            }
+        }
+
+
+
+
     }
+        
+
+
 
 
 }
