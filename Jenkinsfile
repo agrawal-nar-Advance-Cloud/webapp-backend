@@ -24,18 +24,23 @@ pipeline {
         }
 
         stage('Building image') {
-            
-                dockerImage = docker.build ("${BACKEND_IMAGE}")
-
+             steps {
+                script {
+                    dockerImage = docker.build ("${BACKEND_IMAGE}")
+                }
+             
+            }
         }
 
         stage('Registring image') {
-        
-                docker.withRegistry( '', 'dockerCred' ) {
+            steps{
+                script {
+                    docker.withRegistry( '', 'dockerCred' ) {
                     dockerImage.push("${git_hash}")
                     dockerImage.push("latest")
+                    }
                 }
-            
+            }
         }
     }
 
