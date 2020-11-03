@@ -12,7 +12,7 @@ buildNumber.properties
 
 mvnw.cmd
 /mvnw
-helm/myvalues.yaml
+./helm/myvalues.yaml
 
 ### STS ###
 .apt_generated
