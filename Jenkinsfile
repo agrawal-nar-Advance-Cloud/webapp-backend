@@ -52,7 +52,7 @@ pipeline {
             }
         }
 
-        stage('Helm upgrade') {
+        stage('Get nodes') {
             steps{
                 script {
                     withKubeConfig([credentialsId: 'kubernetesCred',serverUrl: "${ServerUrl}"]) {
