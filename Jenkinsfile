@@ -23,17 +23,21 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
-            steps {
-                sh "docker build -t ${BACKEND_IMAGE}:${git_hash} -t ${BACKEND_IMAGE}:latest ."
+        stage('Building image') {
+            steps{
+            dockerImage = docker.build ("${BACKEND_IMAGE}")
             }
         }
 
-        stage('Push Image') {
-            steps {
-                sh "docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}; docker push ${BACKEND_IMAGE}:${git_hash}"
+        stage('Registring image') {
+            steps{
+                docker.withRegistry( '', 'dockerCred' ) {
+                    dockerImage.push("${git_hash}")
+                    dockerImage.push("latest")
+                }
             }
         }
-
     }
+
+
 }
