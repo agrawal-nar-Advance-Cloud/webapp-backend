@@ -22,4 +22,3 @@ myvalues.yaml
 .idea/
 *.tmproj
 .vscode/
-./myvalues.yaml
