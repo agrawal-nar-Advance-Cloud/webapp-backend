@@ -47,6 +47,7 @@ pipeline {
             steps{
                 script {
                     writeFile file: 'helm/myvalues.yaml', text: "${BACKEND_MYVALUES}"
+                    sh "cat ./helm/myvalues.yaml"
                 }
             }
         }
