@@ -56,6 +56,16 @@ pipeline {
             steps{
                 script {
                     withKubeConfig([credentialsId: 'kubernetesCred',serverUrl: "${ServerUrl}"]) {
+                        sh "kubectl get nodes"
+                    }
+                }
+            }
+        }
+
+        stage('Helm upgrade') {
+            steps{
+                script {
+                    withKubeConfig([credentialsId: 'kubernetesCred',serverUrl: "${ServerUrl}"]) {
                         sh "helm upgrade backend ./helm/ -f ./helm/myvalues.yaml"
                     }
                 }
