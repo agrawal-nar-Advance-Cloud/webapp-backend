@@ -21,7 +21,12 @@ spec:
     metadata:
       labels:
         {{- include "backend.selectorLabels" . | nindent 8 }}
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/backend'
+        prometheus.io/port: '8080'
     spec:
+      serviceAccountName: {{ include "backend.serviceAccountName" . }}
       imagePullSecrets:
         - name: {{ .Values.secret.dockercred.name }}-{{ .Release.Name }}
       containers:
