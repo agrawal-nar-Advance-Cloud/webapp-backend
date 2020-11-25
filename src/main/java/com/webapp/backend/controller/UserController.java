@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1/user/**")
 public class UserController {
 
     @Autowired
