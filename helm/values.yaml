@@ -53,3 +53,19 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: "backendserviceaccount"
+
+autoscaling:
+  enabled: true
+  minReplicas: 3  
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 3
+  # targetMemoryUtilizationPercentage: 80
+
+resources: 
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 1000m
+    memory: 1288Mi
+  

@@ -26,7 +26,7 @@ import java.util.LinkedHashSet;
 
 
 @RestController
-@RequestMapping("/v1/watch")
+@RequestMapping("/v1/watch/**")
 public class WatchController {
 
 
