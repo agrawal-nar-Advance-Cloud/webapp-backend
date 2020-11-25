@@ -65,7 +65,7 @@ pipeline {
             steps{
                 script {
                     withKubeConfig([credentialsId: 'kubernetesCred',serverUrl: "${ServerUrl}"]) {
-                        sh "helm upgrade backend ./helm/ -f ./helm/myvalues.yaml"
+                        sh "helm upgrade backend -n api ./helm/ -f ./helm/myvalues.yaml"
                     }
                 }
             }
